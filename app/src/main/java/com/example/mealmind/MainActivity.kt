@@ -11,24 +11,32 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModelProvider
+import androidx.room.Room
+import com.example.mealmind.data.UserViewModel
+import com.example.mealmind.data.UserViewModelFactory
+import com.example.mealmind.data.database.AppDatabase
+import com.example.mealmind.screens.RegisterScreen
 import com.example.mealmind.ui.theme.MealMindTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        val database = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            "meal_mind_database"
+        ).build()
+
         setContent {
             MealMindTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                RegisterScreen(database)
                 }
             }
         }
     }
-}
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
