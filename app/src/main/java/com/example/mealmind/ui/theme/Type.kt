@@ -27,7 +27,7 @@ val Typography = Typography(
     displayMedium = TextStyle(
         fontFamily = tilt_neon,
         fontWeight = FontWeight.Bold,
-        fontSize = 30.sp
+        fontSize = 34.sp
     ),
     labelSmall = TextStyle(
         fontFamily = cabin,

@@ -22,6 +22,10 @@ class UserViewModel(private val userDao: UserDao) : ViewModel() {
             callback(user)
         }
     }
+
+    suspend fun hasUsers(): Boolean {
+        return userDao.countUsers() > 0
+    }
 }
 
 class UserViewModelFactory(private val userDao: UserDao) : ViewModelProvider.Factory {

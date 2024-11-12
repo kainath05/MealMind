@@ -6,7 +6,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -28,7 +27,17 @@ fun RegisterScreenStateful(modifier: Modifier, userViewModel: UserViewModel = vi
     var showDialog by remember { mutableStateOf(false) }
     var dialogMessage by remember { mutableStateOf("") }
 
-    // Alert Dialog for Registration Status
+    LaunchedEffect(key1 = Unit) { //this checks if theres users in the database
+        val userExists = userViewModel.hasUsers()
+        dialogMessage = if (userExists) {
+            "There are users in the database."
+        } else {
+            "No users in the database."
+        }
+        showDialog = true
+    }
+
+    //alert dialog for registration status
     if (showDialog) {
         AlertDialog(
             onDismissRequest = { showDialog = false },
@@ -49,7 +58,7 @@ fun RegisterScreenStateful(modifier: Modifier, userViewModel: UserViewModel = vi
         Image(
             painter = painterResource(id = R.drawable.pizza),
             contentDescription = "Pizza Background",
-            modifier = Modifier.fillMaxSize().graphicsLayer(alpha = 0.5f),
+            modifier = Modifier.fillMaxSize().graphicsLayer(alpha = 0.5f), //opacity
             contentScale = ContentScale.FillBounds,
 
         )
@@ -71,7 +80,10 @@ fun RegisterScreenStateful(modifier: Modifier, userViewModel: UserViewModel = vi
                     dialogMessage = "Passwords do not match"
                     showDialog = true
                 }
-            }
+            },
+            isButtonEnabled = emailState.value.isNotEmpty() && //used to disable button until all fields are filled
+                    passwordState.value.isNotEmpty() &&
+                    confirmPasswordState.value.isNotEmpty()
         )
     }
 }
@@ -84,7 +96,8 @@ fun RegisterScreenStateless(
     onPasswordChange: (String) -> Unit,
     confirmPassword: String,
     onConfirmPasswordChange: (String) -> Unit,
-    onRegisterClick: () -> Unit
+    onRegisterClick: () -> Unit,
+    isButtonEnabled: Boolean
 ) {
     Column(
         modifier = Modifier
@@ -137,6 +150,7 @@ fun RegisterScreenStateless(
         Button(
             onClick = onRegisterClick,
             modifier = Modifier.fillMaxWidth().size(60.dp),
+            enabled = isButtonEnabled,
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
                 contentColor = MaterialTheme.colorScheme.onPrimary
