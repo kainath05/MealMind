@@ -16,6 +16,7 @@ import com.example.mealmind.components.ScaffoldTopBar
 import com.example.mealmind.data.database.AppDatabase
 import com.example.mealmind.screens.HomeScreen
 import com.example.mealmind.screens.LoginScreenStateful
+import com.example.mealmind.screens.ProfileScreen
 import com.example.mealmind.screens.RegisterScreenStateful
 import com.example.mealmind.ui.theme.MealMindTheme
 
