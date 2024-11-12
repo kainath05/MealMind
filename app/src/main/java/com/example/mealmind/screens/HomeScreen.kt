@@ -64,7 +64,7 @@ fun HomeScreen(modifier: Modifier) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Button(onClick = { }
+            Button(onClick = { }, modifier = Modifier.height(50.dp).width(200.dp)
             ) {
                 Text("Get Started", style = MaterialTheme.typography.bodyLarge)
             }
@@ -75,7 +75,9 @@ fun HomeScreen(modifier: Modifier) {
                 "Already have an account?"
             )
 
-            Button(onClick = {}) {
+            Spacer(modifier = Modifier.height(13.dp))
+
+            Button(onClick = {}, modifier = Modifier.height(50.dp).width(200.dp)) {
                 Text("Login", style = MaterialTheme.typography.bodyLarge)
             }
         }
