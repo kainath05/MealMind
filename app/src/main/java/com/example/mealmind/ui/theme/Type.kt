@@ -32,11 +32,16 @@ val Typography = Typography(
     labelSmall = TextStyle(
         fontFamily = cabin,
         fontWeight = FontWeight.Bold,
-        fontSize = 14.sp
+        fontSize = 20.sp
     ),
     bodyLarge = TextStyle(
         fontFamily = cabin,
         fontWeight = FontWeight.Normal,
         fontSize = 20.sp
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = cabin,
+        fontWeight = FontWeight.Normal,
+        fontSize = 30.sp
     )
 )
