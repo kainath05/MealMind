@@ -1,31 +1,75 @@
 package com.example.mealmind.screens
 
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.lifecycleScope
-import androidx.room.Room
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.mealmind.data.UserViewModel
+import com.example.mealmind.data.UserViewModelFactory
 import com.example.mealmind.data.database.AppDatabase
 import com.example.mealmind.data.database.User
-import kotlinx.coroutines.launch
 
 @Composable
-fun RegisterScreen(database: AppDatabase) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
-    val context = LocalContext.current
-    val lifecycleScope = (context as? ComponentActivity)?.lifecycleScope
+fun RegisterScreenStateful(modifier: Modifier, userViewModel: UserViewModel = viewModel(factory = UserViewModelFactory(AppDatabase.getDatabase(LocalContext.current).userDao()))) {
+    val emailState = remember { mutableStateOf("") }
+    val passwordState = remember { mutableStateOf("") }
+    val confirmPasswordState = remember { mutableStateOf("") }
+    var showDialog by remember { mutableStateOf(false) }
+    var dialogMessage by remember { mutableStateOf("") }
 
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            confirmButton = {
+                Button(onClick = { showDialog = false }) {
+                    Text("OK")
+                }
+            },
+            title = { Text(text = "Registration Status") },
+            text = { Text(text = dialogMessage) }
+        )
+    }
+
+    RegisterScreenStateless(
+        email = emailState.value,
+        onEmailChange = { emailState.value = it },
+        password = passwordState.value,
+        onPasswordChange = { passwordState.value = it },
+        confirmPassword = confirmPasswordState.value,
+        onConfirmPasswordChange = { confirmPasswordState.value = it },
+        onRegisterClick = {
+            if (passwordState.value == confirmPasswordState.value) {
+                val user = User(email = emailState.value, password = passwordState.value)
+                userViewModel.insert(user)
+                dialogMessage = "User registered successfully!"
+                showDialog = true
+            } else {
+                dialogMessage = "Passwords do not match"
+                showDialog = true
+            }
+        }
+    )
+}
+
+@Composable
+fun RegisterScreenStateless(
+    email: String,
+    onEmailChange: (String) -> Unit,
+    password: String,
+    onPasswordChange: (String) -> Unit,
+    confirmPassword: String,
+    onConfirmPasswordChange: (String) -> Unit,
+    onRegisterClick: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -33,16 +77,22 @@ fun RegisterScreen(database: AppDatabase) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Text(
+            text = "Welcome",
+            style = MaterialTheme.typography.displayMedium,
+            color = MaterialTheme.colorScheme.secondary
+        )
+        Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
             value = email,
-            onValueChange = { email = it },
+            onValueChange = onEmailChange,
             label = { Text("Email") },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
             value = password,
-            onValueChange = { password = it },
+            onValueChange = onPasswordChange,
             label = { Text("Password") },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth()
@@ -50,25 +100,19 @@ fun RegisterScreen(database: AppDatabase) {
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
             value = confirmPassword,
-            onValueChange = { confirmPassword = it },
+            onValueChange = onConfirmPasswordChange,
             label = { Text("Confirm Password") },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(
-            onClick = {
-                if (password == confirmPassword) {
-                    val user = User(email = email, password = password)
-                    lifecycleScope?.launch {
-                        database.userDao().insert(user)
-                        Toast.makeText(context, "User registered successfully!", Toast.LENGTH_SHORT).show()
-                    }
-                } else {
-                    Toast.makeText(context, "Passwords do not match", Toast.LENGTH_SHORT).show()
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
+            onClick = onRegisterClick,
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.secondary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
+            )
         ) {
             Text("Register")
         }

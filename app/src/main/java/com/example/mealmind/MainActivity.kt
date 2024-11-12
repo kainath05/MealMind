@@ -11,12 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
-import com.example.mealmind.data.UserViewModel
-import com.example.mealmind.data.UserViewModelFactory
+import com.example.mealmind.components.ScaffoldTopBar
 import com.example.mealmind.data.database.AppDatabase
-import com.example.mealmind.screens.RegisterScreen
+import com.example.mealmind.screens.RegisterScreenStateful
 import com.example.mealmind.ui.theme.MealMindTheme
 
 class MainActivity : ComponentActivity() {
@@ -24,32 +22,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val database = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java,
-            "meal_mind_database"
-        ).build()
-
         setContent {
             MealMindTheme {
-                RegisterScreen(database)
+                Scaffold(
+                    topBar = { ScaffoldTopBar() },
+                    content = { paddingValues ->
+                        RegisterScreenStateful(Modifier.padding(paddingValues))
+                    }
+                )
+
                 }
             }
         }
     }
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MealMindTheme {
-        Greeting("Android")
-    }
-}

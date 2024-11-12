@@ -22,12 +22,12 @@ val Typography = Typography(
     displayLarge = TextStyle(
         fontFamily = tilt_neon,
         fontWeight = FontWeight.Normal,
-        fontSize = 36.sp
+        fontSize = 40.sp
     ),
     displayMedium = TextStyle(
-        fontFamily = cabin,
+        fontFamily = tilt_neon,
         fontWeight = FontWeight.Bold,
-        fontSize = 20.sp
+        fontSize = 30.sp
     ),
     labelSmall = TextStyle(
         fontFamily = cabin,
