@@ -16,6 +16,7 @@ import com.example.mealmind.components.ScaffoldTopBar
 import com.example.mealmind.data.database.AppDatabase
 import com.example.mealmind.screens.RegisterScreenStateful
 import com.example.mealmind.ui.theme.MealMindTheme
+import com.example.mealmind.openAi.OpenAiViewModel
 
 
 class MainActivity : ComponentActivity() {
