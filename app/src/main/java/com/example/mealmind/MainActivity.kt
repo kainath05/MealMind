@@ -20,6 +20,10 @@ import com.example.mealmind.screens.ProfileScreen
 import com.example.mealmind.screens.RegisterScreenStateful
 import com.example.mealmind.screens.StatefulFormScreen
 import com.example.mealmind.ui.theme.MealMindTheme
+import com.example.mealmind.openAi.OpenAiViewModel
+import com.example.mealmind.openAi.RecipeComposable
+import com.example.mealmind.openAi.ResponseScreen
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,9 +33,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             MealMindTheme {
                 Scaffold(
-                    topBar = { ScaffoldTopBar() },
+                    topBar = { ScaffoldTopBar()},
                     content = { paddingValues ->
-                        RegisterScreenStateful(Modifier.padding(paddingValues))
+                        RegisterScreenStateful(modifier = Modifier.padding(paddingValues))
                     }
                 )
 
