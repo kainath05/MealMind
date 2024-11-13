@@ -17,6 +17,7 @@ import com.example.mealmind.data.database.AppDatabase
 import com.example.mealmind.screens.RegisterScreenStateful
 import com.example.mealmind.ui.theme.MealMindTheme
 import com.example.mealmind.openAi.OpenAiViewModel
+import com.example.mealmind.openAi.RecipeComposable
 
 
 class MainActivity : ComponentActivity() {
