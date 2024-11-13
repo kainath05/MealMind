@@ -15,27 +15,27 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mealmind.R
 import com.example.mealmind.data.UserViewModel
-import com.example.mealmind.data.UserViewModelFactory
+import com.example.mealmind.data.UserViewModelFactory 
 import com.example.mealmind.data.database.User
 import com.example.mealmind.data.database.AppDatabase
 
 @Composable
-fun RegisterScreenStateful(modifier: Modifier, userViewModel: UserViewModel = viewModel(factory = UserViewModelFactory(AppDatabase.getDatabase(LocalContext.current).userDao()))) {
+fun RegisterScreenStateful(modifier: Modifier, onRegisterSuccess: () -> Unit, userViewModel: UserViewModel = viewModel(factory = UserViewModelFactory(AppDatabase.getDatabase(LocalContext.current).userDao()))) {
     val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
     val confirmPasswordState = remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
     var dialogMessage by remember { mutableStateOf("") }
 
-    LaunchedEffect(key1 = Unit) { //this checks if theres users in the database, has to be a coroutine since its a suspended function
-        val userExists = userViewModel.hasUsers()
-        dialogMessage = if (userExists) {
-            "There are users in the database."
-        } else {
-            "No users in the database."
-        }
-        showDialog = true
-    }
+//    LaunchedEffect(key1 = Unit) { //this checks if theres users in the database, has to be a coroutine since its a suspended function
+//        val userExists = userViewModel.hasUsers()
+//        dialogMessage = if (userExists) {
+//            "There are users in the database."
+//        } else {
+//            "No users in the database."
+//        }
+//        showDialog = true
+//    }
 
     //alert dialog for registration status
     if (showDialog) {
@@ -73,8 +73,7 @@ fun RegisterScreenStateful(modifier: Modifier, userViewModel: UserViewModel = vi
                 if (passwordState.value == confirmPasswordState.value) {
                     val user = User(email = emailState.value, password = passwordState.value)
                     userViewModel.insert(user)
-                    dialogMessage = "User registered successfully!"
-                    showDialog = true
+                    onRegisterSuccess()
                 } else {
                     dialogMessage = "Passwords do not match"
                     showDialog = true

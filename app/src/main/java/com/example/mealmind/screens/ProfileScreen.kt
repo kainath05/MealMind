@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.example.mealmind.R
 
 @Composable
-fun ProfileScreen(modifier: Modifier) {
+fun ProfileScreen(modifier: Modifier, onPreference: () -> Unit) {
     Box(modifier = modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -64,7 +64,7 @@ fun ProfileScreen(modifier: Modifier) {
 
             Spacer(modifier = Modifier.height(13.dp))
 
-            Button(onClick = {}, modifier = Modifier.height(50.dp).width(200.dp)) {
+            Button(onClick = onPreference, modifier = Modifier.height(50.dp).width(200.dp)) {
                 Text("Preference Form", style = MaterialTheme.typography.bodyLarge)
             }
         }

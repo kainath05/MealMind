@@ -19,7 +19,7 @@ import com.example.mealmind.data.UserViewModelFactory
 import com.example.mealmind.data.database.AppDatabase
 
 @Composable
-fun LoginScreenStateful(modifier: Modifier, userViewModel: UserViewModel = viewModel(factory = UserViewModelFactory(
+fun LoginScreenStateful(modifier: Modifier, onLoginSuccess: () -> Unit, userViewModel: UserViewModel = viewModel(factory = UserViewModelFactory(
     AppDatabase.getDatabase(LocalContext.current).userDao()))) {
     val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
@@ -28,12 +28,12 @@ fun LoginScreenStateful(modifier: Modifier, userViewModel: UserViewModel = viewM
 
     fun handleLogin(email: String, password: String) { //checks for bad passwords or emails
         userViewModel.getUser(email, password) { user ->
-            dialogMessage = if (user != null) {
-                "Login Successful!"
+            if (user != null) {
+                onLoginSuccess()
             } else {
-                "Invalid email or password!"
+                dialogMessage = "Invalid email or password!"
+                showDialog = true
             }
-            showDialog = true
         }
     }
 

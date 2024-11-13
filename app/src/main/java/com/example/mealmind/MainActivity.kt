@@ -4,16 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.room.Room
 import com.example.mealmind.components.ScaffoldTopBar
-import com.example.mealmind.data.database.AppDatabase
+import com.example.mealmind.navigation.NavigationHost
 import com.example.mealmind.screens.HomeScreen
 import com.example.mealmind.screens.LoginScreenStateful
 import com.example.mealmind.screens.ProfileScreen
@@ -21,9 +16,7 @@ import com.example.mealmind.screens.RegisterScreenStateful
 import com.example.mealmind.screens.StatefulFormScreen
 import com.example.mealmind.ui.theme.MealMindTheme
 import com.example.mealmind.openAi.OpenAiViewModel
-import com.example.mealmind.openAi.RecipeComposable
 import com.example.mealmind.openAi.ResponseScreen
-
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +28,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     topBar = { ScaffoldTopBar()},
                     content = { paddingValues ->
-                        RegisterScreenStateful(modifier = Modifier.padding(paddingValues))
+                        NavigationHost(modifier = Modifier.padding(paddingValues))
                     }
                 )
 
@@ -43,3 +36,5 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+

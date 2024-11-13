@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.example.mealmind.R
 
 @Composable
-fun HomeScreen(modifier: Modifier) {
+fun HomeScreen(modifier: Modifier,  onGetStartedClick: () -> Unit, onLoginClick: () -> Unit) {
     Box(modifier = modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -64,7 +64,7 @@ fun HomeScreen(modifier: Modifier) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Button(onClick = { }, modifier = Modifier.height(50.dp).width(200.dp)
+            Button(onClick = onGetStartedClick, modifier = Modifier.height(50.dp).width(200.dp)
             ) {
                 Text("Get Started", style = MaterialTheme.typography.bodyLarge)
             }
@@ -77,7 +77,7 @@ fun HomeScreen(modifier: Modifier) {
 
             Spacer(modifier = Modifier.height(13.dp))
 
-            Button(onClick = {}, modifier = Modifier.height(50.dp).width(200.dp)) {
+            Button(onClick = onLoginClick, modifier = Modifier.height(50.dp).width(200.dp)) {
                 Text("Login", style = MaterialTheme.typography.bodyLarge)
             }
         }
