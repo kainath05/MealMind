@@ -42,7 +42,7 @@ fun ProfileScreen(modifier: Modifier) {
                 painter = painterResource(id = R.drawable.default_avatar_profile_icon),
                 contentDescription = "Profile Icon",
                 modifier = Modifier
-                    .width(300.dp)  //to make picture smaller
+                    .width(300.dp)  
                     .height(300.dp),
                 contentScale = ContentScale.Crop
             )

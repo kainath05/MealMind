@@ -27,7 +27,7 @@ fun RegisterScreenStateful(modifier: Modifier, userViewModel: UserViewModel = vi
     var showDialog by remember { mutableStateOf(false) }
     var dialogMessage by remember { mutableStateOf("") }
 
-    LaunchedEffect(key1 = Unit) { //this checks if theres users in the database
+    LaunchedEffect(key1 = Unit) { //this checks if theres users in the database, has to be a coroutine since its a suspended function
         val userExists = userViewModel.hasUsers()
         dialogMessage = if (userExists) {
             "There are users in the database."
@@ -60,7 +60,6 @@ fun RegisterScreenStateful(modifier: Modifier, userViewModel: UserViewModel = vi
             contentDescription = "Pizza Background",
             modifier = Modifier.fillMaxSize().graphicsLayer(alpha = 0.5f), //opacity
             contentScale = ContentScale.FillBounds,
-
         )
 
         RegisterScreenStateless(

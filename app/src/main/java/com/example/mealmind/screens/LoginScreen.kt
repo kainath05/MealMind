@@ -87,7 +87,7 @@ fun LoginScreenStateless(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Welcome",
+            text = "Login",
             style = MaterialTheme.typography.displayMedium,
             color = MaterialTheme.colorScheme.secondary
         )
