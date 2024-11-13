@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.example.mealmind.R
 
 @Composable
-fun ProfileScreen(modifier: Modifier, onPreference: () -> Unit) {
+fun ProfileScreen(modifier: Modifier, onPreference: () -> Unit, onRecipe: () -> Unit) {
     Box(modifier = modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -57,7 +57,7 @@ fun ProfileScreen(modifier: Modifier, onPreference: () -> Unit) {
 
 
             Button(
-                onClick = { }, modifier = Modifier.height(50.dp).width(200.dp)
+                onClick = onRecipe, modifier = Modifier.height(50.dp).width(200.dp)
             ) {
                 Text("Recipes", style = MaterialTheme.typography.bodyLarge)
             }

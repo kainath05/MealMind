@@ -58,10 +58,16 @@ fun NavigationHost(modifier: Modifier, navController: NavHostController) { //not
             RegisterScreenStateful(modifier, onRegisterSuccess = { navController.navigate("form_screen") })
         }
         composable("form_screen") {
-            StatefulFormScreen(modifier)
+            StatefulFormScreen(modifier, onSubmit = {navController.navigate("recipes_screen")})
         }
         composable("profile_screen") {
-            ProfileScreen(modifier, onPreference = { navController.navigate("form_screen") })
+            ProfileScreen(modifier, onPreference = { navController.navigate("form_screen") }, onRecipe = {navController.navigate("recipes_screen")})
+        }
+        composable("recipes_screen") {
+            RecipesScreen(modifier, onDetails = {navController.navigate("details_screen")})
+        }
+        composable("details_screen") {
+            RecipeDetails(modifier)
         }
     }
 }
