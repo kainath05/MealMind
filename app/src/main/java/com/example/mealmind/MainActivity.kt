@@ -18,6 +18,7 @@ import com.example.mealmind.screens.HomeScreen
 import com.example.mealmind.screens.LoginScreenStateful
 import com.example.mealmind.screens.ProfileScreen
 import com.example.mealmind.screens.RegisterScreenStateful
+import com.example.mealmind.screens.StatefulFormScreen
 import com.example.mealmind.ui.theme.MealMindTheme
 
 class MainActivity : ComponentActivity() {
@@ -30,7 +31,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     topBar = { ScaffoldTopBar() },
                     content = { paddingValues ->
-                        RegisterScreenStateful(Modifier.padding(paddingValues))
+                        StatefulFormScreen(Modifier.padding(paddingValues))
                     }
                 )
 
