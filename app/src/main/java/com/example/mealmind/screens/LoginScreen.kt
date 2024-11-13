@@ -19,7 +19,8 @@ import com.example.mealmind.data.UserViewModelFactory
 import com.example.mealmind.data.database.AppDatabase
 
 @Composable
-fun LoginScreenStateful(modifier: Modifier, userViewModel: UserViewModel = viewModel(factory = UserViewModelFactory(AppDatabase.getDatabase(LocalContext.current).userDao()))) {
+fun LoginScreenStateful(modifier: Modifier, userViewModel: UserViewModel = viewModel(factory = UserViewModelFactory(
+    AppDatabase.getDatabase(LocalContext.current).userDao()))) {
     val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
