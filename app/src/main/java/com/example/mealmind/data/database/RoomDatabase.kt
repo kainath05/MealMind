@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 
-    companion object { //the singleton database so its initialized once
+    companion object { //the companion object for database so its initialized once
         @Volatile
         private var INSTANCE: AppDatabase? = null
 

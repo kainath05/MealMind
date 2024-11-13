@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     topBar = { ScaffoldTopBar() },
                     content = { paddingValues ->
-                        StatefulFormScreen(Modifier.padding(paddingValues))
+                        RegisterScreenStateful(Modifier.padding(paddingValues))
                     }
                 )
 
