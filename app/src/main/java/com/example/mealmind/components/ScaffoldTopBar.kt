@@ -1,30 +1,43 @@
 package com.example.mealmind.components
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-
+import androidx.compose.ui.res.painterResource
+import com.example.mealmind.LocalNavController
+import com.example.mealmind.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScaffoldTopBar() {
+    val navController = LocalNavController.current
+
     TopAppBar(
         title = {
-            Box(
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
+                Spacer(modifier = Modifier.weight(1.5f)) //making it exactly in the middle
+
                 Text(
                     text = "MealMind",
-                    style = MaterialTheme.typography.displayLarge
+                    style = MaterialTheme.typography.displayLarge,
+                    modifier = Modifier.weight(4f)
                 )
+
+                IconButton(
+                    onClick = { navController.popBackStack() },
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.backbutton),
+                        contentDescription = "Back Button"
+                    )
+                }
             }
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -32,5 +45,3 @@ fun ScaffoldTopBar() {
         )
     )
 }
-
-
