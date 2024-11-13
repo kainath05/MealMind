@@ -26,8 +26,10 @@ fun ScaffoldTopBar() {
                 )
             }
         },
-        colors = TopAppBarDefaults.smallTopAppBarColors(
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             titleContentColor = MaterialTheme.colorScheme.primary
         )
     )
 }
+
+
