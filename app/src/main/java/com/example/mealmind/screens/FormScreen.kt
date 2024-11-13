@@ -63,7 +63,7 @@ fun StatefulFormScreen(modifier: Modifier = Modifier) {
     val dietaryOptions = listOf("Vegan", "Vegetarian", "Dairy-Free", "Gluten-Free", "None")
     var selectedDietaryOption by remember { mutableStateOf(dietaryOptions[0]) }
 
-    val mealTypeOptions = listOf("Breakfast", "Lunch", "Dinner", "Snack")
+    val mealTypeOptions = listOf("Breakfast", "Lunch", "Dinner", "Snack", "Dessert")
     var selectedMealType by remember { mutableStateOf(mealTypeOptions[0]) }
 
     val cuisineTypeOptions = listOf(
@@ -79,21 +79,14 @@ fun StatefulFormScreen(modifier: Modifier = Modifier) {
         "Spanish",
         "Lebanese",
         "American",
-        "Caribbean",
         "African",
         "Korean",
-        "Turkish",
         "Vietnamese",
-        "Brazilian",
-        "Ethiopian",
         "Moroccan",
         "Russian",
-        "Polish",
         "British",
         "German",
-        "Peruvian",
-        "Sushi",
-        "Fusion"
+        "Canadian"
     )
     var selectedCuisineTypeOptions by remember { mutableStateOf(cuisineTypeOptions[0]) }
 
