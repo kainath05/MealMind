@@ -17,6 +17,7 @@ import com.example.mealmind.data.database.AppDatabase
 import com.example.mealmind.screens.RegisterScreenStateful
 import com.example.mealmind.ui.theme.MealMindTheme
 
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,9 +26,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             MealMindTheme {
                 Scaffold(
-                    topBar = { ScaffoldTopBar() },
+                    topBar = { ScaffoldTopBar()},
                     content = { paddingValues ->
-                        RegisterScreenStateful(Modifier.padding(paddingValues))
+                        RegisterScreenStateful(modifier = Modifier.padding(paddingValues))
                     }
                 )
 

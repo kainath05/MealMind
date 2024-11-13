@@ -1,8 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("com.google.devtools.ksp")
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.ksp)
+
 }
 
 android {
@@ -52,6 +53,15 @@ android {
 }
 
 dependencies {
+
+    //http request lib
+    implementation(libs.ktor.client.okhttp)
+
+    // OpenAI client
+    implementation(libs.openai)
+
+    //compiler
+    implementation(libs.androidx.compose.compiler)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
