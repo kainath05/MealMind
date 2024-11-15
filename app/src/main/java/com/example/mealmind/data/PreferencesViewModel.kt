@@ -21,6 +21,10 @@ class PreferenceViewModel(private val preferenceDao: PreferenceDao) : ViewModel(
             callback(preferences)
         }
     }
+
+    suspend fun hasPreferences(): Boolean {
+        return preferenceDao.countPreferences() > 0
+    }
 }
 
 class PreferenceViewModelFactory(private val preferenceDao: PreferenceDao) : ViewModelProvider.Factory {

@@ -32,4 +32,7 @@ interface PreferenceDao {
 
     @Query("SELECT * FROM preferences WHERE userId = :userId")
     suspend fun getPreferencesByUserId(userId: Int): List<Preference>
+
+    @Query("SELECT COUNT(*) FROM preferences")
+    suspend fun countPreferences(): Int
 }
