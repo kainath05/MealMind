@@ -1,12 +1,20 @@
 package com.example.mealmind.screens
 
+import android.app.AlertDialog
+import androidx.compose.compiler.plugins.kotlin.ComposeCallableIds.remember
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -16,12 +24,14 @@ import com.example.mealmind.R
 import com.example.mealmind.data.PreferenceViewModel
 import com.example.mealmind.data.PreferenceViewModelFactory
 import com.example.mealmind.data.database.AppDatabase
+import androidx.compose.material3.*
+
 
 @Composable
 fun RecipesScreen(modifier: Modifier, onDetails: () -> Unit, preferenceViewModel: PreferenceViewModel = viewModel(factory = PreferenceViewModelFactory(
     AppDatabase.getDatabase(LocalContext.current).preferenceDao()))) {
 
-    //TO CHECK IF PREFERENCES POPULATED DATABASE!!
+ //   TO CHECK IF PREFERENCES POPULATED DATABASE!!
 //    var showDialog by remember { mutableStateOf(false) }
 //    var dialogMessage by remember { mutableStateOf("") }
 //

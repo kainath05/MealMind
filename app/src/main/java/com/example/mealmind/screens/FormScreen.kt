@@ -10,8 +10,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.mealmind.data.PreferenceViewModel
+import com.example.mealmind.data.PreferenceViewModelFactory
+import com.example.mealmind.data.database.AppDatabase
 import com.example.mealmind.data.database.Preference
 
 @Composable
@@ -59,8 +64,9 @@ fun FormScreen(
 @Composable
 fun StatefulFormScreen(
     modifier: Modifier = Modifier,
-    onSubmit: (preference: Preference) -> Unit
+    onSubmit: () -> Unit
 ) {
+    val preferenceViewModel: PreferenceViewModel = viewModel(factory = PreferenceViewModelFactory(AppDatabase.getDatabase(LocalContext.current).preferenceDao()))
     val dietaryOptions = listOf("Vegan", "Vegetarian", "Dairy-Free", "Gluten-Free", "None")
     var selectedDietaryOption by remember { mutableStateOf(dietaryOptions[0]) }
     val mealTypeOptions = listOf("Breakfast", "Lunch", "Dinner", "Snack", "Dessert")
@@ -71,6 +77,7 @@ fun StatefulFormScreen(
         "Russian", "British", "German", "Canadian"
     )
     var selectedCuisineTypeOptions by remember { mutableStateOf(cuisineTypeOptions[0]) }
+
 
     Column(
         modifier = modifier
@@ -121,7 +128,10 @@ fun StatefulFormScreen(
                     mealOptions = selectedMealType,
                     cuisineType = selectedCuisineTypeOptions
                 )
-                onSubmit(preference)
+                preferenceViewModel.insert(preference)
+
+                onSubmit();
+
             },
             modifier = Modifier
                 .fillMaxWidth()

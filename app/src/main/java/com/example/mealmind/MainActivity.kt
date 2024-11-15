@@ -53,8 +53,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun NavigationHost(
     modifier: Modifier,
-    navController: NavHostController,
-    preferenceViewModel: PreferenceViewModel = viewModel(factory = PreferenceViewModelFactory(AppDatabase.getDatabase(LocalContext.current).preferenceDao()))) {
+    navController: NavHostController) {
     NavHost(
         navController = navController,
         startDestination = "home_screen"
@@ -81,9 +80,8 @@ fun NavigationHost(
         composable("form_screen") {
             StatefulFormScreen(
                 modifier = modifier,
-                onSubmit = { preference ->
+                onSubmit = {
                     navController.navigate("recipes_screen")
-                    preferenceViewModel.insert(preference)
                 }
             )
         }
