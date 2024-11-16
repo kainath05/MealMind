@@ -9,6 +9,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -32,7 +36,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MealMindTheme {
+            var isDarkTheme by remember { mutableStateOf(false) }
+
+            MealMindTheme(darkTheme = isDarkTheme) {
                 val navController = rememberNavController()
                 CompositionLocalProvider(LocalNavController provides navController) {
                     Scaffold(
@@ -40,7 +46,8 @@ class MainActivity : ComponentActivity() {
                         content = { paddingValues ->
                             NavigationHost(
                                 modifier = Modifier.padding(paddingValues),
-                                navController = navController
+                                navController = navController,
+                                onDarkTheme = { isDarkTheme = !isDarkTheme }
                             )
                         }
                     )
@@ -53,7 +60,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun NavigationHost(
     modifier: Modifier,
-    navController: NavHostController) {
+    navController: NavHostController,
+    onDarkTheme: () -> Unit) {
     NavHost(
         navController = navController,
         startDestination = "home_screen"
@@ -100,6 +108,13 @@ fun NavigationHost(
         }
         composable("details_screen") {
             RecipeDetails(modifier = modifier)
+        }
+        composable("settings_screen") {
+            SettingsScreen(
+                modifier = modifier,
+                onDarkThemeToggle = onDarkTheme,
+                onNavigateToPreferences = { navController.navigate("form_screen") }
+            )
         }
     }
 }
