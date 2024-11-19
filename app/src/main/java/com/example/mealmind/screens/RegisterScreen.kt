@@ -71,7 +71,9 @@ fun RegisterScreenStateful(modifier: Modifier, onRegisterSuccess: () -> Unit, us
             onConfirmPasswordChange = { confirmPasswordState.value = it },
             onRegisterClick = {
                 if (passwordState.value == confirmPasswordState.value) {
-                    val user = User(email = emailState.value, password = passwordState.value)
+                    val user = User(email = emailState.value, password = passwordState.value,
+                        profileImage = 0
+                    )
                     userViewModel.insert(user)
                     onRegisterSuccess()
                 } else {

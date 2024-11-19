@@ -15,11 +15,20 @@ class UserViewModel(private val userDao: UserDao) : ViewModel() {
         }
     }
 
-    fun getUser(email: String, password: String, callback: (User?) -> Unit) {
+    fun getUser(email: String, password: String = "", callback: (User?) -> Unit) {
         viewModelScope.launch {
             val user = userDao.getUser(email, password)
             callback(user)
         }
+    }
+
+    suspend fun getUserByEmail(email: String): User? {
+        return userDao.getUserByEmail(email)
+    }
+
+
+    suspend fun updateProfileImage(email: String, imageId: Int) {
+        userDao.updateProfileImage(email, imageId)
     }
 
     suspend fun hasUsers(): Boolean {

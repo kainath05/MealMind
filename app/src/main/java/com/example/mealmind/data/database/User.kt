@@ -11,7 +11,8 @@ import androidx.room.Query
 data class User(
     @PrimaryKey(autoGenerate = true) val uid: Int = 0,
     @ColumnInfo(name = "email") val email: String,
-    @ColumnInfo(name = "password") val password: String
+    @ColumnInfo(name = "password") val password: String,
+    @ColumnInfo(name = "profile_image") val profileImage: Int
 )
 
 
@@ -23,6 +24,12 @@ interface UserDao {
 
     @Query("SELECT * FROM users WHERE email = :email AND password = :password")
     suspend fun getUser(email: String, password: String): User?
+
+    @Query("UPDATE users SET profile_image = :imageId WHERE email = :email")
+    suspend fun updateProfileImage(email: String, imageId: Int)
+
+    @Query("SELECT * FROM users WHERE email = :email LIMIT 1")
+    suspend fun getUserByEmail(email: String): User?
 
     @Query("SELECT COUNT(*) FROM users")
     suspend fun countUsers(): Int

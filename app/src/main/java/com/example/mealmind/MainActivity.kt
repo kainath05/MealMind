@@ -14,16 +14,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.mealmind.components.ScaffoldTopBar
-import com.example.mealmind.data.PreferenceViewModel
-import com.example.mealmind.data.PreferenceViewModelFactory
-import com.example.mealmind.data.database.AppDatabase
 import com.example.mealmind.screens.*
 import com.example.mealmind.ui.theme.MealMindTheme
 
@@ -62,6 +57,7 @@ fun NavigationHost(
     modifier: Modifier,
     navController: NavHostController,
     onDarkTheme: () -> Unit) {
+
     NavHost(
         navController = navController,
         startDestination = "home_screen"
