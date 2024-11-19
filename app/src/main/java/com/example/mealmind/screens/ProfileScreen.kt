@@ -28,9 +28,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mealmind.R
+import com.example.mealmind.data.SharedViewModel
 import com.example.mealmind.data.UserViewModel
 import com.example.mealmind.data.UserViewModelFactory
 import com.example.mealmind.data.database.AppDatabase
+
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
+
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun ProfileScreen(
@@ -38,21 +46,29 @@ fun ProfileScreen(
     onPreference: () -> Unit,
     onRecipe: () -> Unit,
     email: String,
+    sharedViewModel: SharedViewModel,
     userViewModel: UserViewModel = viewModel(factory = UserViewModelFactory(
         AppDatabase.getDatabase(LocalContext.current).userDao())
     )
 ) {
     var selectedProfileImage by remember { mutableStateOf<Int?>(null) }
     var profileImageResource by remember { mutableStateOf(R.drawable.default_avatar_profile_icon) }
-//    var email by remember { mutableStateOf("") }
+    var isImageSelectionVisible by remember { mutableStateOf(true) }
+    val coroutineScope = rememberCoroutineScope() // Coroutine scope for launching suspend functions
 
-//    LaunchedEffect(Unit) {
-//        val user = userViewModel.getUserByEmail(email)
-//        user?.let {
-//            email = it.email
-//            profileImageResource = it.profileImage
-//        }
-//    }
+    // Fetch the current profile image when the screen is displayed
+    LaunchedEffect(Unit) {
+        coroutineScope.launch {
+            val user = userViewModel.getUserByEmail(email)
+            user?.let {
+                if (it.profileImage != 0) { // If a profile image is already set
+                    selectedProfileImage = it.profileImage
+                    profileImageResource = it.profileImage
+                    isImageSelectionVisible = false // Hide the selection options
+                }
+            }
+        }
+    }
 
     Box(modifier = modifier.fillMaxSize()) {
         Column(
@@ -70,28 +86,37 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Profile image selection (3 options)
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                val images = listOf(R.drawable.bear, R.drawable.walrus, R.drawable.dog)
-                images.forEach { imageId ->
-                    Image(
-                        painter = painterResource(id = imageId),
-                        contentDescription = "Profile Icon",
-                        modifier = Modifier
-                            .width(100.dp)
-                            .height(100.dp)
-                            .clickable {
-                                selectedProfileImage = imageId
-                                profileImageResource = imageId
-                            },
-                        contentScale = ContentScale.Crop
-                    )
-                    
+            // Display the image selection row only if no profile picture is selected
+            if (isImageSelectionVisible) {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    val images = listOf(R.drawable.bear, R.drawable.walrus, R.drawable.dog)
+                    images.forEach { imageId ->
+                        Image(
+                            painter = painterResource(id = imageId),
+                            contentDescription = "Profile Icon",
+                            modifier = Modifier
+                                .width(100.dp)
+                                .height(100.dp)
+                                .clickable {
+                                    selectedProfileImage = imageId
+                                    profileImageResource = imageId
+                                    isImageSelectionVisible = false // Hide selection row
+                                    sharedViewModel.updatePictureId(imageId) // Update shared state
+
+                                    // Launch coroutine to update the database
+                                    coroutineScope.launch {
+                                        userViewModel.updateProfileImage(email, imageId)
+                                    }
+                                },
+                            contentScale = ContentScale.Crop
+                        )
+                    }
                 }
+
+                Spacer(modifier = Modifier.height(16.dp))
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
+            // Display the selected profile image
             selectedProfileImage?.let {
                 Image(
                     painter = painterResource(id = it),
@@ -122,11 +147,7 @@ fun ProfileScreen(
                 Text("Preference Form", style = MaterialTheme.typography.bodyLarge)
             }
         }
-
-//        LaunchedEffect(selectedProfileImage) {
-//            selectedProfileImage?.let { selectedImage ->
-//                userViewModel.updateProfileImage(email, selectedImage)
-//            }
-//        }
     }
 }
+
+

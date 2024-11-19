@@ -23,6 +23,7 @@ import com.example.mealmind.components.ScaffoldTopBar
 import com.example.mealmind.data.SharedViewModel
 import com.example.mealmind.screens.*
 import com.example.mealmind.ui.theme.MealMindTheme
+import io.ktor.utils.io.concurrent.shared
 
 val LocalNavController = compositionLocalOf<NavHostController> {
     error("No NavController found!")
@@ -103,7 +104,8 @@ fun NavigationHost(
                 modifier = modifier,
                 onPreference = { navController.navigate("form_screen") },
                 onRecipe = { navController.navigate("recipes_screen") },
-                email = sharedViewModel.email
+                email = sharedViewModel.email,
+                sharedViewModel = sharedViewModel
             )
         }
         composable("recipes_screen") {
