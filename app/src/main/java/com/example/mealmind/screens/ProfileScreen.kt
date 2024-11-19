@@ -37,13 +37,14 @@ fun ProfileScreen(
     modifier: Modifier,
     onPreference: () -> Unit,
     onRecipe: () -> Unit,
+    email: String,
     userViewModel: UserViewModel = viewModel(factory = UserViewModelFactory(
         AppDatabase.getDatabase(LocalContext.current).userDao())
     )
 ) {
     var selectedProfileImage by remember { mutableStateOf<Int?>(null) }
     var profileImageResource by remember { mutableStateOf(R.drawable.default_avatar_profile_icon) }
-    var email by remember { mutableStateOf("") }
+//    var email by remember { mutableStateOf("") }
 
 //    LaunchedEffect(Unit) {
 //        val user = userViewModel.getUserByEmail(email)
@@ -85,6 +86,7 @@ fun ProfileScreen(
                             },
                         contentScale = ContentScale.Crop
                     )
+                    
                 }
             }
 
@@ -104,7 +106,7 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text(text = "Email: $email") //doesnt show yet
+            Text(text = "Email: $email")
 
             Spacer(modifier = Modifier.height(16.dp))
 

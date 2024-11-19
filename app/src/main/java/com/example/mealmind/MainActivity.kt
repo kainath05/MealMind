@@ -14,11 +14,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.mealmind.components.ScaffoldTopBar
+import com.example.mealmind.data.SharedViewModel
 import com.example.mealmind.screens.*
 import com.example.mealmind.ui.theme.MealMindTheme
 
@@ -32,6 +34,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             var isDarkTheme by remember { mutableStateOf(false) }
+            val sharedViewModel: SharedViewModel = viewModel() // Create the shared ViewModel
 
             MealMindTheme(darkTheme = isDarkTheme) {
                 val navController = rememberNavController()
@@ -42,7 +45,8 @@ class MainActivity : ComponentActivity() {
                             NavigationHost(
                                 modifier = Modifier.padding(paddingValues),
                                 navController = navController,
-                                onDarkTheme = { isDarkTheme = !isDarkTheme }
+                                onDarkTheme = { isDarkTheme = !isDarkTheme },
+                                sharedViewModel = sharedViewModel
                             )
                         }
                     )
@@ -56,7 +60,9 @@ class MainActivity : ComponentActivity() {
 fun NavigationHost(
     modifier: Modifier,
     navController: NavHostController,
-    onDarkTheme: () -> Unit) {
+    onDarkTheme: () -> Unit,
+    sharedViewModel: SharedViewModel
+) {
 
     NavHost(
         navController = navController,
@@ -72,7 +78,10 @@ fun NavigationHost(
         composable("login_screen") {
             LoginScreenStateful(
                 modifier = modifier,
-                onLoginSuccess = { navController.navigate("profile_screen") }
+                onLoginSuccess = { email ->
+                    sharedViewModel.updateEmail(email) // Set the email in the ViewModel
+                    navController.navigate("profile_screen")
+                }
             )
         }
         composable("register_screen") {
@@ -93,7 +102,8 @@ fun NavigationHost(
             ProfileScreen(
                 modifier = modifier,
                 onPreference = { navController.navigate("form_screen") },
-                onRecipe = { navController.navigate("recipes_screen") }
+                onRecipe = { navController.navigate("recipes_screen") },
+                email = sharedViewModel.email
             )
         }
         composable("recipes_screen") {
