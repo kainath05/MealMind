@@ -28,7 +28,7 @@ fun RecipeDetailsScreen(
 
     LaunchedEffect(recipeName) {
         if (recipeName.isNotEmpty()) {
-            openAiViewModel.getIngredients(recipeName)
+            openAiViewModel.getRecipe(recipeName)
         }
     }
 

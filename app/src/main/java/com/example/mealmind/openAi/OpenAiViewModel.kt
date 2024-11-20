@@ -52,25 +52,6 @@ class OpenAiViewModel : ViewModel() {
         }
     }
 
-
-    fun getIngredients(recipeName: String) {
-        val prompt = "Generate the ingredients for $recipeName."
-
-        viewModelScope.launch {
-            try {
-                val request = ChatCompletionRequest(
-                    model = ModelId("gpt-3.5-turbo"),
-                    messages = listOf(ChatMessage(role = ChatRole.User, content = prompt))
-                )
-                val completion = openAI.chatCompletion(request)
-                val response = completion.choices.firstOrNull()?.message?.content ?: "No response."
-                responseText.value = response // Update the state with the response
-            } catch (e: Exception) {
-                responseText.value = "Error: ${e.localizedMessage}"
-            }
-        }
-    }
-
     fun getRecipe(recipeName: String) {
         val prompt = "Generate the recipe for $recipeName."
 
