@@ -7,6 +7,7 @@ import androidx.room.ForeignKey
 import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
+import androidx.room.Update
 
 @Entity(
     tableName = "preferences",
@@ -29,6 +30,9 @@ data class Preference(
 interface PreferenceDao {
     @Insert
     suspend fun insert(preference: Preference)
+    
+    @Update
+    suspend fun update(preference: Preference)
 
     @Query("SELECT * FROM preferences WHERE userId = :userId")
     suspend fun getPreferencesByUserId(userId: Int): List<Preference>

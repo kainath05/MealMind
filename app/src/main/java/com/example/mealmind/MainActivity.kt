@@ -98,9 +98,8 @@ fun NavigationHost(
         composable("form_screen") {
             StatefulFormScreen(
                 modifier = modifier,
-                onSubmit = {
-                    navController.navigate("recipes_screen")
-                }
+                onSubmit = { navController.navigate("recipes_screen") } ,
+                sharedViewModel = sharedViewModel
             )
         }
         composable("profile_screen") {

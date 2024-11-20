@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mealmind.data.PreferenceViewModel
 import com.example.mealmind.data.PreferenceViewModelFactory
+import com.example.mealmind.data.SharedViewModel
 import com.example.mealmind.data.database.AppDatabase
 import com.example.mealmind.data.database.Preference
 
@@ -64,7 +65,8 @@ fun FormScreen(
 @Composable
 fun StatefulFormScreen(
     modifier: Modifier = Modifier,
-    onSubmit: () -> Unit
+    onSubmit: () -> Unit,
+    sharedViewModel: SharedViewModel
 ) {
     val preferenceViewModel: PreferenceViewModel = viewModel(factory = PreferenceViewModelFactory(AppDatabase.getDatabase(LocalContext.current).preferenceDao()))
     val dietaryOptions = listOf("Vegan", "Vegetarian", "Dairy-Free", "Gluten-Free", "None")
@@ -128,7 +130,8 @@ fun StatefulFormScreen(
                     mealOptions = selectedMealType,
                     cuisineType = selectedCuisineTypeOptions
                 )
-                preferenceViewModel.insert(preference)
+
+                preferenceViewModel.insertOrUpdatePreference(sharedViewModel.userId, preference)
 
                 onSubmit();
 
