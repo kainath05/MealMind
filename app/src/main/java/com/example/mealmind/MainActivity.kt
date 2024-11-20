@@ -92,7 +92,7 @@ fun NavigationHost(
         composable("register_screen") {
             RegisterScreenStateful(
                 modifier = modifier,
-                onRegisterSuccess = { navController.navigate("form_screen") }
+                onRegisterSuccess = { navController.navigate("login_screen") }
             )
         }
         composable("form_screen") {
