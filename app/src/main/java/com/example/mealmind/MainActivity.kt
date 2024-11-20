@@ -121,7 +121,7 @@ fun NavigationHost(
             SettingsScreen(
                 modifier = modifier,
                 onDarkThemeToggle = onDarkTheme,
-                onNavigateToPreferences = { navController.navigate("form_screen") }
+                onNavigateToProfile = { navController.navigate("profile_screen") }
             )
         }
     }
