@@ -13,6 +13,9 @@ class SharedViewModel : ViewModel() {
     var pictureId by mutableIntStateOf(0)
         private set
 
+    var userId by mutableIntStateOf(0)
+        private set
+
     fun updateEmail(newEmail: String) { // Rename this function
         email = newEmail
     }
@@ -21,6 +24,8 @@ class SharedViewModel : ViewModel() {
         pictureId = newPictureId
     }
 
-
+    fun updateUserId(newUserId: Int){
+        userId = newUserId
+    }
 }
 

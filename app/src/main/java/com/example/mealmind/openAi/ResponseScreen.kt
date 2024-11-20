@@ -21,6 +21,8 @@ fun ResponseScreen(
 {
     var ingredients by remember { mutableStateOf("") }
     var cuisine by remember { mutableStateOf("") }
+    var mealType by remember { mutableStateOf("") }
+    var dietaryRestrictions by remember { mutableStateOf("") }
 
 
     Column(
@@ -51,7 +53,7 @@ fun ResponseScreen(
 
         // triggers GET request to endpoint
         Button(
-            onClick = { viewModel.getResponse(ingredients, cuisine) },
+            onClick = { viewModel.getResponse(cuisine, mealType, dietaryRestrictions) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Get Recipe")

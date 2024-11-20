@@ -2,8 +2,11 @@ package com.example.mealmind.screens
 
 import android.app.AlertDialog
 import androidx.compose.compiler.plugins.kotlin.ComposeCallableIds.remember
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -25,48 +28,63 @@ import com.example.mealmind.data.PreferenceViewModel
 import com.example.mealmind.data.PreferenceViewModelFactory
 import com.example.mealmind.data.database.AppDatabase
 import androidx.compose.material3.*
+import com.example.mealmind.data.database.Preference
+import com.example.mealmind.openAi.OpenAiViewModel
 
 
 @Composable
-fun RecipesScreen(modifier: Modifier, onDetails: () -> Unit, preferenceViewModel: PreferenceViewModel = viewModel(factory = PreferenceViewModelFactory(
-    AppDatabase.getDatabase(LocalContext.current).preferenceDao()))) {
+fun RecipesScreen(
+    modifier: Modifier = Modifier,
+    userId: Int,
+    onNavigateToDetails: (String) -> Unit,
+    preferenceViewModel: PreferenceViewModel = viewModel(factory = PreferenceViewModelFactory(
+        AppDatabase.getDatabase(LocalContext.current).preferenceDao()
+    )),
+    openAiViewModel: OpenAiViewModel = viewModel()
+) {
+    val preferences = remember { mutableStateOf<List<Preference>>(emptyList()) }
+    val responses = openAiViewModel.responses
 
- //   TO CHECK IF PREFERENCES POPULATED DATABASE!!
-//    var showDialog by remember { mutableStateOf(false) }
-//    var dialogMessage by remember { mutableStateOf("") }
-//
-//        LaunchedEffect(key1 = Unit) { //this checks if theres users in the database, has to be a coroutine since its a suspended function
-//            val preferencesExist = preferenceViewModel.hasPreferences()
-//            dialogMessage = if (preferencesExist) {
-//                "There are preferences in the database."
-//            } else {
-//                "No preferences in the database."
-//            }
-//            showDialog = true
-//        }
-//
-//    if (showDialog) {
-//        AlertDialog(
-//            onDismissRequest = { showDialog = false },
-//            confirmButton = {
-//                Button(onClick = { showDialog = false }) {
-//                    Text("OK")
-//                }
-//            },
-//            title = { Text(text = "Is Preference Table Populated!") },
-//            text = { Text(text = dialogMessage) }
-//        )
-//    }
+    LaunchedEffect(userId) {
+        preferenceViewModel.getPreferencesByUserId(userId) { prefList ->
+            preferences.value = prefList
+            if (prefList.isNotEmpty()) {
+                val preference = prefList.first()
+                openAiViewModel.getResponse(
+                    cuisine = preference.cuisineType,
+                    dietaryRestrictions = preference.dietaryOptions,
+                    mealType = preference.mealOptions
+                )
+            }
+        }
+    }
 
-    Column(modifier = modifier.fillMaxSize().padding(16.dp)) {
-        Text("RECIPESSS") //connects to database and needs a liking feature
-        IconButton(
-            onClick = onDetails
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.backbutton),
-                contentDescription = "Back Button"
-            )
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Top
+    ) {
+        Text(text = "Generated Recipes:", style = MaterialTheme.typography.titleLarge)
+        Spacer(modifier = Modifier.height(16.dp))
+
+        if (responses.value.isNotEmpty()) {
+            responses.value.forEach { recipe ->
+                Button(
+                    onClick = { onNavigateToDetails(recipe) },
+                    modifier = Modifier.padding(vertical = 8.dp)
+                ) {
+                    Text(text = recipe)
+                }
+            }
+        } else {
+            Text(text = "Loading recipes...", style = MaterialTheme.typography.bodyMedium)
         }
     }
 }
+
+
+
+
+
+
