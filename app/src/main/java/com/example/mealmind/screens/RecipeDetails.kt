@@ -18,6 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mealmind.R
 import com.example.mealmind.openAi.OpenAiViewModel
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+
 
 @Composable
 fun RecipeDetailsScreen(
@@ -26,6 +29,7 @@ fun RecipeDetailsScreen(
 ) {
     val ingredientResponse = openAiViewModel.responseText
 
+    // Fetch ingredients when the recipeName changes
     LaunchedEffect(recipeName) {
         if (recipeName.isNotEmpty()) {
             openAiViewModel.getRecipe(recipeName)
@@ -38,13 +42,35 @@ fun RecipeDetailsScreen(
             .padding(16.dp),
         verticalArrangement = Arrangement.Top
     ) {
-        Text(text = "Ingredients for $recipeName:", style = MaterialTheme.typography.titleLarge)
+        Text(
+            text = "Ingredients for $recipeName:",
+            style = MaterialTheme.typography.titleLarge
+        )
         Spacer(modifier = Modifier.height(16.dp))
+
         if (ingredientResponse.value.isNotEmpty()) {
-            Text(text = ingredientResponse.value, style = MaterialTheme.typography.bodyLarge)
+            // Parse ingredients into a list
+            val ingredients = ingredientResponse.value.split("\n").filter { it.isNotBlank() }
+
+            // Use LazyColumn to display the list
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxSize()
+            ) {
+                items(ingredients) { ingredient ->
+                    Text(
+                        text = ingredient,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+            }
         } else {
-            Text(text = "Loading ingredients...", style = MaterialTheme.typography.bodyMedium)
+            Text(
+                text = "Loading ingredients...",
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
 }
+
 
