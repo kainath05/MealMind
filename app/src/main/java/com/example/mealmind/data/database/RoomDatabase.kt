@@ -5,11 +5,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [User::class], version = 1, exportSchema = false)
+@Database(entities = [User::class, Preference::class, Recipe::class], version = 5, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
+    abstract fun preferenceDao(): PreferenceDao
+    abstract fun recipeDao(): RecipeDao
 
-    companion object { //the singleton database so its initialized once
+    companion object { //the companion object for database so its initialized once
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
@@ -19,7 +21,7 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "meal_mind_database"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 instance
             }

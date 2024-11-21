@@ -1,8 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("com.google.devtools.ksp")
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.ksp)
+
 }
 
 android {
@@ -53,6 +54,15 @@ android {
 
 dependencies {
 
+    //http request lib
+    implementation(libs.ktor.client.okhttp)
+
+    // OpenAI client
+    implementation(libs.openai)
+
+    //compiler
+    implementation(libs.androidx.compose.compiler)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -71,6 +81,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.navigation.compose)
 
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.androidx.room.compiler)
@@ -96,4 +107,3 @@ dependencies {
     // optional - Paging 3 Integration
     implementation(libs.androidx.room.paging)
 }
-
