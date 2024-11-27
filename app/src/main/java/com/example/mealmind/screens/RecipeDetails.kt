@@ -1,6 +1,7 @@
 package com.example.mealmind.screens
 
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,8 @@ import com.example.mealmind.R
 import com.example.mealmind.openAi.OpenAiViewModel
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
@@ -43,81 +46,89 @@ fun RecipeDetailsScreen(
         }
     }
 
-    Column(
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Top
+            .padding(16.dp)
     ) {
-        // Row for Recipe Title and Heart Icon
-        Row (
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
+        val (ingredients, instructions) = splittingIngredientsAndInstructions(ingredientResponse.value)
+
+        // Recipe Title and Heart Icon Row
+        item {
             Text(
                 text = "Recipe: $recipeName",
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(bottom = 8.dp) // Add some spacing for clarity
             )
+        }
+        item {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp), // Add padding inside the row
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
 
-            // Heart Icon Button
-            HeartIconButton { isLiked ->
-                println("Recipe liked: $isLiked")
+
+            ) {
+                Text(
+                    text = recipeName,
+                    style = MaterialTheme.typography.titleLarge
+                )
+
+                HeartIconButton()
+
+
             }
         }
 
 
-        Spacer(modifier = Modifier.height(16.dp))
-
+        // Ingredients Section
         if (ingredientResponse.value.isNotEmpty()) {
-            val (ingredients, instructions) = splittingIngredientsAndInstructions(ingredientResponse.value)
-
-            // Ingredients Section
-            Text(
-                text = "Ingredients:",
-                style = MaterialTheme.typography.titleMedium
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                items(ingredients) { ingredient ->
-                    Text(
-                        text = ingredient,
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
+            // Ingredients Header
+            item {
+                Text(
+                    text = "Ingredients:",
+                    style = MaterialTheme.typography.titleMedium
+                )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            // Dynamic List of Ingredients
+            items(ingredients) { ingredient ->
+                Text(
+                    text = ingredient,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
 
             // Instructions Section
-            Text(
-                text = "Instructions:",
-                style = MaterialTheme.typography.titleMedium
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                items(instructions) { instruction ->
-                    Text(
-                        text = instruction,
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
+            item {
+                Text(
+                    text = "Instructions:",
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
+
+            // Dynamic List of Instructions
+            items(instructions) { instruction ->
+                Text(
+                    text = instruction,
+                    style = MaterialTheme.typography.bodyLarge
+                )
             }
         } else {
-            Text(
-                text = "Loading recipe details...",
-                style = MaterialTheme.typography.bodyMedium
-            )
+            // Loading State
+            item {
+                Text(
+                    text = "Loading recipe details...",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
         }
     }
 }
+
 
 
 
@@ -162,23 +173,18 @@ fun splittingIngredientsAndInstructions(recipeDetails: String): Pair<List<String
 
 @Composable
 fun HeartIconButton(
-    onHeartClick: (Boolean) -> Unit
 ) {
     // Remember the state of the heart (liked or not)
-    val isLiked = remember { mutableStateOf(false) }
-
     IconButton(
-        onClick = {
-            isLiked.value = !isLiked.value
-            onHeartClick(isLiked.value)
-        }
+        onClick = {}
     ) {
         Icon(
             painter = painterResource(
                 id = R.drawable.icons8_heart_48
             ),
             contentDescription = "Heart Icon",
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(39.dp)
+
         )
     }
 }

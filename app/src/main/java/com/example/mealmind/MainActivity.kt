@@ -106,21 +106,27 @@ fun NavigationHost(
             ProfileScreen(
                 modifier = modifier,
                 onPreference = { navController.navigate("form_screen") },
-                onRecipe = { navController.navigate("recipes_screen") },
+                onRecipe = {
+                    println("Navigating to recipes_screen")
+                    navController.navigate("recipes_screen")
+                },
                 email = sharedViewModel.email,
                 sharedViewModel = sharedViewModel
             )
         }
+
         composable("recipes_screen") {
             RecipesScreen(
                 modifier = modifier,
                 userId = sharedViewModel.userId,
                 onNavigateToDetails = { recipeName ->
+                    println("Navigating to details_screen with recipe: $recipeName")
                     val encodedName = Uri.encode(recipeName)
                     navController.navigate("details_screen/$encodedName")
                 }
             )
         }
+
         composable(
             route = "details_screen/{recipeName}",
             arguments = listOf(navArgument("recipeName") { type = NavType.StringType })
