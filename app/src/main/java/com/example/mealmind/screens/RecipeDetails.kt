@@ -30,12 +30,21 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import com.example.mealmind.data.PreferenceViewModel
+import com.example.mealmind.data.PreferenceViewModelFactory
+import com.example.mealmind.data.RecipeViewModel
+import com.example.mealmind.data.RecipeViewModelFactory
+import com.example.mealmind.data.SharedViewModel
+import com.example.mealmind.data.database.AppDatabase
+import com.example.mealmind.data.database.Recipe
 
 
 @Composable
 fun RecipeDetailsScreen(
     recipeName: String,
-    openAiViewModel: OpenAiViewModel = viewModel()
+    openAiViewModel: OpenAiViewModel = viewModel(),
+    sharedViewModel: SharedViewModel
 ) {
     val ingredientResponse = openAiViewModel.responseText
 
@@ -74,10 +83,13 @@ fun RecipeDetailsScreen(
             ) {
                 Text(
                     text = recipeName,
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleMedium
                 )
 
-                HeartIconButton()
+                HeartIconButton( recipeName = recipeName,
+                    ingredients = ingredients.joinToString("\n"),
+                    instructions = instructions.joinToString("\n"),
+                    userId = sharedViewModel.userId,)
 
 
             }
@@ -90,7 +102,7 @@ fun RecipeDetailsScreen(
             item {
                 Text(
                     text = "Ingredients:",
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
 
@@ -173,21 +185,45 @@ fun splittingIngredientsAndInstructions(recipeDetails: String): Pair<List<String
 
 @Composable
 fun HeartIconButton(
+    recipeName: String,
+    ingredients: String,
+    instructions: String,
+    userId: Int,
+    recipeViewModel: RecipeViewModel = viewModel(factory = RecipeViewModelFactory(
+        AppDatabase.getDatabase(LocalContext.current).recipeDao()
+    ))
 ) {
-    // Remember the state of the heart (liked or not)
+    val isLiked = remember { mutableStateOf(false) }
+
     IconButton(
-        onClick = {}
+        onClick = {
+            isLiked.value = !isLiked.value
+
+            if (isLiked.value) {
+                // Insert recipe into the database
+                recipeViewModel.insert(
+                    Recipe(
+                        userId = userId,
+                        title = recipeName,
+                        ingredients = ingredients,
+                        instructions = instructions
+                    )
+                )
+                println("Recipe added to the database: $recipeName")
+            }
+        }
     ) {
         Icon(
-            painter = painterResource(
-                id = R.drawable.icons8_heart_48
-            ),
+            painter = painterResource(id = R.drawable.icons8_heart_48),
             contentDescription = "Heart Icon",
-            modifier = Modifier.size(39.dp)
-
+            tint = if (isLiked.value) Color.Red else Color.Gray,
+            modifier = Modifier.size(30.dp)
         )
     }
 }
+
+
+
 
 
 

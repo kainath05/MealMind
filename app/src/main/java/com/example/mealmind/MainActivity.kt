@@ -132,7 +132,7 @@ fun NavigationHost(
             arguments = listOf(navArgument("recipeName") { type = NavType.StringType })
         ) { backStackEntry ->
             val recipeName = Uri.decode(backStackEntry.arguments?.getString("recipeName"))
-            RecipeDetailsScreen(recipeName = recipeName)
+            RecipeDetailsScreen(recipeName = recipeName, sharedViewModel = sharedViewModel)
         }
         composable("settings_screen") {
             SettingsScreen(
