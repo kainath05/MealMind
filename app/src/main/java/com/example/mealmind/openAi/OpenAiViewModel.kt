@@ -53,7 +53,15 @@ class OpenAiViewModel : ViewModel() {
     }
 
     fun getRecipe(recipeName: String) {
-        val prompt = "Generate the recipe for $recipeName."
+        val prompt = """
+        Generate a recipe for "$recipeName". 
+        Use the following format:
+        Ingredients:
+        - List of ingredients, one per line.
+
+        Instructions:
+        1. Step-by-step instructions, one step per line.
+    """.trimIndent()
 
         viewModelScope.launch {
             try {
