@@ -1,44 +1,29 @@
 package com.example.mealmind.screens
 
-
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mealmind.R
-import com.example.mealmind.openAi.OpenAiViewModel
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import com.example.mealmind.data.PreferenceViewModel
-import com.example.mealmind.data.PreferenceViewModelFactory
 import com.example.mealmind.data.RecipeViewModel
 import com.example.mealmind.data.RecipeViewModelFactory
 import com.example.mealmind.data.SharedViewModel
 import com.example.mealmind.data.database.AppDatabase
 import com.example.mealmind.data.database.Recipe
-
+import com.example.mealmind.openAi.OpenAiViewModel
 
 @Composable
 fun RecipeDetailsScreen(
@@ -63,50 +48,32 @@ fun RecipeDetailsScreen(
     ) {
         val (ingredients, instructions) = splittingIngredientsAndInstructions(ingredientResponse.value)
 
-        // Recipe Title and Heart Icon Row
+        item {
+            Spacer(modifier = Modifier.height(55.dp))
+        }
         item {
             Text(
-                text = "Recipe: $recipeName",
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(bottom = 8.dp) // Add some spacing for clarity
+                text = recipeName,
+                style = MaterialTheme.typography.labelSmall
             )
         }
         item {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp), // Add padding inside the row
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
-
-
-            ) {
-                Text(
-                    text = recipeName,
-                    style = MaterialTheme.typography.titleMedium
-                )
-
-                HeartIconButton( recipeName = recipeName,
-                    ingredients = ingredients.joinToString("\n"),
-                    instructions = instructions.joinToString("\n"),
-                    userId = sharedViewModel.userId,)
-
-
-            }
+            HeartIconButton(
+                recipeName = recipeName,
+                ingredients = ingredients.joinToString("\n"),
+                instructions = instructions.joinToString("\n"),
+                userId = sharedViewModel.userId
+            )
         }
-
 
         // Ingredients Section
         if (ingredientResponse.value.isNotEmpty()) {
-            // Ingredients Header
             item {
                 Text(
                     text = "Ingredients:",
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge,
                 )
             }
-
-            // Dynamic List of Ingredients
             items(ingredients) { ingredient ->
                 Text(
                     text = ingredient,
@@ -118,11 +85,9 @@ fun RecipeDetailsScreen(
             item {
                 Text(
                     text = "Instructions:",
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
-
-            // Dynamic List of Instructions
             items(instructions) { instruction ->
                 Text(
                     text = instruction,
@@ -130,7 +95,6 @@ fun RecipeDetailsScreen(
                 )
             }
         } else {
-            // Loading State
             item {
                 Text(
                     text = "Loading recipe details...",
@@ -141,14 +105,7 @@ fun RecipeDetailsScreen(
     }
 }
 
-
-
-
-
-
 fun splittingIngredientsAndInstructions(recipeDetails: String): Pair<List<String>, List<String>> {
-    println("Processing Recipe Details: $recipeDetails") // Debugging
-
     // Find "Ingredients:" and "Instructions:" headers
     val ingredientsStart = recipeDetails.indexOf("Ingredients:", ignoreCase = true)
     val instructionsStart = recipeDetails.indexOf("Instructions:", ignoreCase = true)
@@ -176,12 +133,8 @@ fun splittingIngredientsAndInstructions(recipeDetails: String): Pair<List<String
         emptyList()
     }
 
-    println("Extracted Ingredients: $ingredients") // Debugging
-    println("Extracted Instructions: $instructions") // Debugging
-
     return Pair(ingredients, instructions)
 }
-
 
 @Composable
 fun HeartIconButton(
@@ -209,7 +162,6 @@ fun HeartIconButton(
                         instructions = instructions
                     )
                 )
-                println("Recipe added to the database: $recipeName")
             }
         }
     ) {
@@ -221,17 +173,3 @@ fun HeartIconButton(
         )
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

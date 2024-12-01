@@ -114,19 +114,16 @@ fun NavigationHost(
                 sharedViewModel = sharedViewModel
             )
         }
-
         composable("recipes_screen") {
             RecipesScreen(
                 modifier = modifier,
                 userId = sharedViewModel.userId,
                 onNavigateToDetails = { recipeName ->
-                    println("Navigating to details_screen with recipe: $recipeName")
                     val encodedName = Uri.encode(recipeName)
                     navController.navigate("details_screen/$encodedName")
                 }
             )
         }
-
         composable(
             route = "details_screen/{recipeName}",
             arguments = listOf(navArgument("recipeName") { type = NavType.StringType })
