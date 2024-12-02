@@ -24,7 +24,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.mealmind.components.ScaffoldTopBar
 import com.example.mealmind.data.SharedViewModel
-import com.example.mealmind.openAi.ResponseScreen
 import com.example.mealmind.screens.*
 import com.example.mealmind.ui.theme.MealMindTheme
 import io.ktor.utils.io.concurrent.shared
