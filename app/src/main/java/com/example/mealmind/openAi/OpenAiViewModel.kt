@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 // REFERENCES:
 // Open AI docs: https://platform.openai.com/docs/guides/text-generation
 //
+//
 @OptIn(BetaOpenAI::class)
 class OpenAiViewModel : ViewModel() {
 
