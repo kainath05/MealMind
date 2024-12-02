@@ -107,9 +107,9 @@ fun NavigationHost(
                 modifier = modifier,
                 onPreference = { navController.navigate("form_screen") },
                 onRecipe = {
-                    println("Navigating to recipes_screen")
                     navController.navigate("recipes_screen")
                 },
+                onLikedRecipes ={navController.navigate("liked_recipes_screen")} ,
                 email = sharedViewModel.email,
                 sharedViewModel = sharedViewModel
             )
@@ -137,6 +137,9 @@ fun NavigationHost(
                 onDarkThemeToggle = onDarkTheme,
                 onNavigateToProfile = { navController.navigate("profile_screen") }
             )
+        }
+        composable("liked_recipes_screen") {
+            LikedRecipesScreen(userId = sharedViewModel.userId)
         }
     }
 }
