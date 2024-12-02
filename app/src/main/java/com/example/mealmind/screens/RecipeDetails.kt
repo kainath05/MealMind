@@ -150,9 +150,8 @@ fun HeartIconButton(
 
     IconButton(
         onClick = {
-            isLiked.value = !isLiked.value
-
-            if (isLiked.value) {
+            if (!isLiked.value) { // Ensure the button works only if it hasn't been clicked before
+                isLiked.value = true
                 // Insert recipe into the database
                 recipeViewModel.insert(
                     Recipe(
@@ -173,3 +172,4 @@ fun HeartIconButton(
         )
     }
 }
+
