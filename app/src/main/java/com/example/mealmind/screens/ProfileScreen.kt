@@ -45,6 +45,7 @@ fun ProfileScreen(
     modifier: Modifier,
     onPreference: () -> Unit,
     onRecipe: () -> Unit,
+    onLikedRecipes: () -> Unit,
     email: String,
     sharedViewModel: SharedViewModel,
     userViewModel: UserViewModel = viewModel(factory = UserViewModelFactory(
@@ -116,7 +117,6 @@ fun ProfileScreen(
                 Spacer(modifier = Modifier.height(16.dp))
             }
 
-            // Display the selected profile image
             selectedProfileImage?.let {
                 Image(
                     painter = painterResource(id = it),
@@ -145,6 +145,14 @@ fun ProfileScreen(
 
             Button(onClick = onPreference, modifier = Modifier.height(50.dp).width(200.dp)) {
                 Text("Preference Form", style = MaterialTheme.typography.bodyLarge)
+            }
+
+            Spacer(modifier = Modifier.height(13.dp))
+
+            Button(
+                onClick = onLikedRecipes, modifier = Modifier.height(50.dp).width(200.dp)
+            ) {
+                Text("Liked Recipes", style = MaterialTheme.typography.bodyLarge)
             }
         }
     }

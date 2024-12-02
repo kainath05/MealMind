@@ -25,7 +25,6 @@ class PreferenceViewModel(private val preferenceDao: PreferenceDao) : ViewModel(
         viewModelScope.launch {
             val existingPreferences = preferenceDao.getPreferencesByUserId(userId)
             if (existingPreferences.isNotEmpty()) {
-                // Update the first preference found (or implement your own logic for handling multiple records)
                 val updatedPreference = preference.copy(userId = existingPreferences.first().userId)
                 preferenceDao.update(updatedPreference)
             } else {

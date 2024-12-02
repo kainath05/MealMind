@@ -16,7 +16,7 @@ class SharedViewModel : ViewModel() {
     var userId by mutableIntStateOf(0)
         private set
 
-    fun updateEmail(newEmail: String) { // Rename this function
+    fun updateEmail(newEmail: String) {
         email = newEmail
     }
 

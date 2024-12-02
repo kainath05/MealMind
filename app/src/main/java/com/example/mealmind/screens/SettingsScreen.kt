@@ -32,14 +32,14 @@ fun SettingsScreen(
 
         Button(
             onClick = onDarkThemeToggle,
-            modifier = Modifier.size(width = 200.dp, height = 60.dp) // Set button size
+            modifier = Modifier.size(width = 200.dp, height = 60.dp)
         ) {
             Text(text = "Dark Theme", style = MaterialTheme.typography.bodyLarge)
         }
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = onNavigateToProfile,
-            modifier = Modifier.size(width = 200.dp, height = 60.dp) // Set button size
+            modifier = Modifier.size(width = 200.dp, height = 60.dp) 
         ) {
             Text(text = "Go to Profile", style = MaterialTheme.typography.bodyLarge)
         }

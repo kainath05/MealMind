@@ -24,7 +24,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.mealmind.components.ScaffoldTopBar
 import com.example.mealmind.data.SharedViewModel
-import com.example.mealmind.openAi.ResponseScreen
 import com.example.mealmind.screens.*
 import com.example.mealmind.ui.theme.MealMindTheme
 import io.ktor.utils.io.concurrent.shared
@@ -106,7 +105,10 @@ fun NavigationHost(
             ProfileScreen(
                 modifier = modifier,
                 onPreference = { navController.navigate("form_screen") },
-                onRecipe = { navController.navigate("recipes_screen") },
+                onRecipe = {
+                    navController.navigate("recipes_screen")
+                },
+                onLikedRecipes ={navController.navigate("liked_recipes_screen")} ,
                 email = sharedViewModel.email,
                 sharedViewModel = sharedViewModel
             )
@@ -126,7 +128,7 @@ fun NavigationHost(
             arguments = listOf(navArgument("recipeName") { type = NavType.StringType })
         ) { backStackEntry ->
             val recipeName = Uri.decode(backStackEntry.arguments?.getString("recipeName"))
-            RecipeDetailsScreen(recipeName = recipeName)
+            RecipeDetailsScreen(recipeName = recipeName, sharedViewModel = sharedViewModel)
         }
         composable("settings_screen") {
             SettingsScreen(
@@ -134,6 +136,9 @@ fun NavigationHost(
                 onDarkThemeToggle = onDarkTheme,
                 onNavigateToProfile = { navController.navigate("profile_screen") }
             )
+        }
+        composable("liked_recipes_screen") {
+            LikedRecipesScreen(userId = sharedViewModel.userId)
         }
     }
 }
