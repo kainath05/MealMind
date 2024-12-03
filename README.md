@@ -1,4 +1,3 @@
-# To do list:
-- Make the like button be able to be only pressed once.
+# To do list: ZACHCCHCHCHHC
 - Put api key into environment variable.
-- Refactoring code the like screen. Make it stateless and stateful!
+- Refactoring code the liked recipe screen. Make it stateless and stateful!
