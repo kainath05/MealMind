@@ -24,11 +24,12 @@ import com.example.mealmind.data.SharedViewModel
 import com.example.mealmind.data.database.AppDatabase
 import com.example.mealmind.data.database.Recipe
 import com.example.mealmind.openAi.OpenAiViewModel
+import com.example.mealmind.openAi.OpenAiViewModelFactory
 
 @Composable
 fun RecipeDetailsScreen(
     recipeName: String,
-    openAiViewModel: OpenAiViewModel = viewModel(),
+    openAiViewModel: OpenAiViewModel = viewModel(factory = OpenAiViewModelFactory(LocalContext.current)),
     sharedViewModel: SharedViewModel
 ) {
     val ingredientResponse = openAiViewModel.responseText

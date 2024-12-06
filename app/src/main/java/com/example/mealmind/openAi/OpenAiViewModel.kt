@@ -1,6 +1,9 @@
 package com.example.mealmind.openAi
+
+import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.aallam.openai.api.BetaOpenAI
 import com.aallam.openai.api.chat.ChatCompletionRequest
@@ -9,6 +12,7 @@ import com.aallam.openai.api.chat.ChatRole
 import com.aallam.openai.client.OpenAI
 import com.aallam.openai.api.model.ModelId
 import kotlinx.coroutines.launch
+import com.example.mealmind.util.getApiKey
 
 
 // REFERENCES:
@@ -16,9 +20,9 @@ import kotlinx.coroutines.launch
 //
 //
 @OptIn(BetaOpenAI::class)
-class OpenAiViewModel : ViewModel() {
+class OpenAiViewModel(context: Context) : ViewModel() {
 
-    private val openAI = OpenAI("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")
+    private val openAI = OpenAI(getApiKey(context))
     val responses = mutableStateOf<List<String>>(emptyList()) // Store multiple outputs
     val responseText = mutableStateOf("") // Store single response for detailed views
 
@@ -80,4 +84,10 @@ class OpenAiViewModel : ViewModel() {
     }
 }
 
+
+class OpenAiViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return OpenAiViewModel(context) as T
+    }
+}
 
