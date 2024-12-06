@@ -13,4 +13,4 @@
 .externalNativeBuild
 .cxx
 local.properties
-/src/main/res/raw/keys.json
+app/src/main/res/raw/keys.json
