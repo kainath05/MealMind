@@ -12,6 +12,7 @@ import com.example.mealmind.data.PreferenceViewModelFactory
 import com.example.mealmind.data.database.AppDatabase
 import com.example.mealmind.data.database.Preference
 import com.example.mealmind.openAi.OpenAiViewModel
+import com.example.mealmind.openAi.OpenAiViewModelFactory
 
 @Composable
 fun RecipesScreen(
@@ -21,7 +22,7 @@ fun RecipesScreen(
     preferenceViewModel: PreferenceViewModel = viewModel(factory = PreferenceViewModelFactory(
         AppDatabase.getDatabase(LocalContext.current).preferenceDao()
     )),
-    openAiViewModel: OpenAiViewModel = viewModel()
+    openAiViewModel: OpenAiViewModel = viewModel(factory = OpenAiViewModelFactory(LocalContext.current))
 ) {
     val preferences = remember { mutableStateOf<List<Preference>>(emptyList()) }
     val responses = openAiViewModel.responses
