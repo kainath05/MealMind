@@ -1,5 +1,7 @@
 # MealMind App
 
+![MealMind Logo](logo.png)
+
 Welcome to the MealMind App! This application provides users with personalized meal recipes based on their preferences and dietary restrictions using OpenAI's GPT-3.5 model.
 
 ## Features
