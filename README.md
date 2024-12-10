@@ -15,7 +15,7 @@ Welcome to the MealMind App! This application provides users with personalized m
 ### Prerequisites
 
 1. **Android Studio**: Make sure you have Android Studio installed on your machine.
-2. **ChatGPT API Key**: You need an API key from OpenAI to use the chat functionality.
+2. **ChatGPT API Key**: You need an API key from OpenAI.
 
 ### Steps to Add A Key:
 
