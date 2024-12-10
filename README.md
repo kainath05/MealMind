@@ -1,4 +1,5 @@
 # MealMind App
+# By Kainath Ahmed, Kyle Fournier, Zachary Dube
 
 ![MealMind Logo](logo.png)
 
